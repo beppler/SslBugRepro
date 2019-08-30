@@ -13,6 +13,7 @@ namespace SslBugRepro
             {
                 MakeRequest("github.com", 443);
                 MakeRequest("git.mps.com.br", 443);
+                MakeRequest("cav.receita.fazenda.gov.br", 443);
                 MakeRequest("api.integracao-bnmp.cnj.jus.br", 443);
             }
             catch (Exception ex)
@@ -28,7 +29,7 @@ namespace SslBugRepro
             tcpClient.Connect(host, port);
             using var tcpStream = tcpClient.GetStream();
             using var stream = new SslStream(tcpStream, false);
-            stream.AuthenticateAsClient(host, null, SslProtocols.Tls12, false);
+            stream.AuthenticateAsClient(host, null, SslProtocols.Tls12 | SslProtocols.Tls11 | SslProtocols.Tls, false);
             Console.WriteLine($"\tSSL Protocol: {stream.SslProtocol}");
             Console.WriteLine($"\tCipher Algorithm: {stream.CipherAlgorithm}");
             Console.WriteLine($"\tCipher Strength: {stream.CipherStrength}");
